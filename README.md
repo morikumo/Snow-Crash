@@ -57,5 +57,3 @@ Le projet est structuré en une série de niveaux. Chaque niveau contient les é
 Snow-Crash est un projet passionnant et éducatif pour quiconque souhaite améliorer ses compétences en sécurité informatique. En progressant à travers les niveaux, vous acquerrez une expérience pratique précieuse dans l'analyse de programmes, la découverte de vulnérabilités et l'exploitation des failles de sécurité. Profitez du challenge et bon hacking !
 
 ---
-
-Pour toute question ou support, veuillez contacter l'administrateur du projet ou consulter la documentation fournie avec chaque niveau.
