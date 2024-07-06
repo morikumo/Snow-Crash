@@ -1,0 +1,33 @@
+Pour ce level03 on a un fichier level03.
+Un executable, on va donc comme d'hab le copier sur la machine locale pour l'analyser.
+
+Une fois copié on fait un cat sur le fichier pour voir ce qu'il contient.
+
+Je vois un patern interressant:
+
+**
+/usr/bin/env echo Exploit me
+**
+
+Parmis d'autres choses biensur.
+
+On execute le fichier pour voir ce qu'il fait.
+il affiche "Exploit me", Je comprend que je dois trouver un moyen de l'exploiter.
+Le echo en particulier car il n'a pas de chemin absolu. On peut donc le remplacer par un autre.
+Et c'est ce qu'on va faire. On va faire un fichier echo qui va contenir un reverse shell. 
+Juste la commande 
+-- /bin/getflag --
+
+Une fois fait on donne les droit au fichiers echo pour qu'il soit utilisable. 
+
+-- chmod +x echo --
+
+Bien sur un export pour qu'il cherche directement dans tmp d'abord comme ca il produit le comportement attendu.
+
+-- export PATH=/tmp:$PATH --
+
+Enfin on execute le fichier level03 et on attend le flag.
+
+-- ./level03 --
+
+Check flag.Here is your token : qi0maab88jeaj46qoumi7maus

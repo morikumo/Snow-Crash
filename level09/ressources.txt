@@ -1,0 +1,66 @@
+Nous avons 2 fichiers un executable level09 et un fichier token dont les droit sont eux aussi limité. Mais on peut l'afficher avec cat.
+
+-- cat token -- 
+
+** Sortie:
+f4kmm6p|=�p�n��DB�Du{��
+**
+
+On peut voir que le fichier token est illisible. On va donc devoir utiliser le fichier level09 pour le lire.
+
+-- ./level09 --
+
+** Sortie:
+You need to provied only one arg.
+**
+
+On peut voir que le fichier level09 attend un argument. On va donc essayer de lui donner le fichier token en argument.
+
+-- ./level09 token --
+
+** Sortie:
+tpmhr
+**
+
+Ce n'est pas le mdp on s'en doute c'est trop simple. On va donc voir comment fonctionne le fichier level09.
+
+-- ltrace ./level09 token --
+
+** Sortie:
+__libc_start_main(0x80487ce, 2, 0xbffff7e4, 0x8048aa0, 0x8048b10 <unfinished ...>
+ptrace(0, 0, 1, 0, 0xb7e2fe38)                                  = -1
+puts("You should not reverse this"You should not reverse this
+)                             = 28
++++ exited (status 1) +++
+**
+
+Interessant, "You should not reverse this" est affiché. On va donc essayé de reverse du coup.
+
+J'utilise ghidra pour m'affiche le code du binaire level09.
+
+Je me retrouve avec la logique du reverse.
+
+** Code:
+putchar((int)*(char *)(local_120 + *(int *)(param_2 + 4)) + local_120);
+**
+
+Je vais donc faire un script python pour inverser le reverse.
+
+Une fois le script fait on va le mettre dans tmp et l'executer avec token.
+
+-- vim /tmp/script.py --
+-- chmod +x /tmp/script.py --
+-- python /tmp/script.py --
+
+** Sortie:
+f3iji1ju5yuevaus41q1afiuq
+**
+
+Et voila maintenant on va au flag09.
+
+-- su flag09 --
+-- getflag --
+
+** Sortie:
+s5cAJpM8ev6XHw998pRWG728z
+**

