@@ -1,6 +1,0 @@
-Pour trouver le level 00 on a fait :
-- find / -user flag00 2</dev/null 
-Qui va verifier les user qui ont flag00, et on fait abstraction des erreur ce qui nous donne un rendu plus lisse.
-On arrive a un fichier john crypté. On a utiliser un script python le décrypté avec la methode Cesar.
-
-Ce qui nous donne nottoohardhere pour le flag00.
