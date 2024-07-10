@@ -29,6 +29,9 @@ Pour ce niveau, nous devons trouver un fichier contenant le mot `flag01`.
    En regardant dans le fichier `/etc/passwd`, nous avons trouvé une ligne qui contient un mot de passe hashé pour `flag01` :
 
    ```bash
+   flag00:x:3000:3000::/home/flag/flag00:/bin/bash
+   flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
+   flag02:x:3002:3002::/home/flag/flag02:/bin/bash
    flag03:x:3003:3003::/home/flag/flag03:/bin/bash
    flag04:x:3004:3004::/home/flag/flag04:/bin/bash
    flag05:x:3005:3005::/home/flag/flag05:/bin/bash
