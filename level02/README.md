@@ -113,8 +113,6 @@ Pour ce niveau, nous avons un fichier `pcap` qui est une interface de programmat
 
    DEL étant la suppression on supprime directement a partir des points, on va nettoyer tout ça.
 
-   Après le nettoyage, le mot de passe semblait être `ft_wandrNDRelL0L`. Cependant, après analyse, il s'avère qu'il y avait un caractère supplémentaire `l` incorrect. Le mot de passe correct est :
-
    **Mot de passe : `ft_waNDReL0L`**
 
    **Essayer le mot de passe :**
