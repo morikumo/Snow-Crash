@@ -1,4 +1,4 @@
-# Level 02
+# Level 01
 
 ## Indice
 
@@ -51,10 +51,11 @@ Pour ce niveau, nous devons trouver un fichier contenant le mot `flag01`.
    Le mot de passe trouvé était hashé. Nous avons utilisé `john` pour le décrypter. Voici comment nous avons procédé :
 
    - Nous avons extrait le hash du fichier `/etc/passwd`.
+   - On va sur la machine local pour utiliser john.
    - Nous avons utilisé `john` pour décrypter le hash.
 
    ```bash
-   level01@SnowCrash:~$ john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+   level01@SnowCrash:~$ john --show hash.txt
    ```
 
    Après avoir exécuté `john`, nous avons obtenu le mot de passe : `abcdefg`.
