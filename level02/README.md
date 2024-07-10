@@ -107,6 +107,12 @@ Pour ce niveau, nous avons un fichier `pcap` qui est une interface de programmat
 
 6. **Identifier et nettoyer le mot de passe :**
 
+   Avec l'outil Wireshark on peut voir des "." dans le mots `ft_wandr...NDRel.L0L` .
+
+   Les points on une valeur de `7f` dans le man ascii ça représente : `127   7F    DEL`.
+
+   DEL étant la suppression on supprime directement a partir des points, on va nettoyer tout ça.
+
    Après le nettoyage, le mot de passe semblait être `ft_wandrNDRelL0L`. Cependant, après analyse, il s'avère qu'il y avait un caractère supplémentaire `l` incorrect. Le mot de passe correct est :
 
    **Mot de passe : `ft_waNDReL0L`**
