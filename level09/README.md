@@ -81,23 +81,16 @@ Nous écrivons un script Python pour inverser cette transformation.
 
 **Script Python :**
 ```python
-# Script pour inverser la transformation appliquée par level09
-
-# Lecture du contenu du fichier token
-with open('token', 'r') as file:
-    token_content = file.read().strip()
-
-# La transformation trouvée dans le binaire
-def transform_char(c, local_120):
-    return chr((ord(c) - local_120) % 256)
-
-# local_120 est une valeur trouvée dans l'analyse
-local_120 = ord('t') - ord('f')  # Exemple de calcul pour local_120
-
-# Inversion de la transformation
-original_string = ''.join(transform_char(c, local_120) for c in token_content)
-
-print("Flag:", original_string)
+import sys
+i = -1
+content = open("/home/user/level09/token").readlines()[0]
+for c in content:
+   i += 1
+     try:
+        sys.stdout.write(chr(ord(c) - i))
+     except:
+        pass
+print "\n",
 ```
 
 Nous mettons le script dans `/tmp` et l'exécutons.
