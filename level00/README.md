@@ -20,7 +20,9 @@ Pour ce niveau, nous devons trouver un fichier appartenant à l'utilisateur `fla
 
    Le fichier `john` semble être crypté. Nous devons le décrypter pour trouver le flag.
 
-3. **Décrypter le fichier en utilisant un script Python :**
+   Deux choix s'offre a nous, un script ou decode. Choisir chiffrement de César.
+
+4. **Décrypter le fichier en utilisant un script Python :**
 
    Le fichier est crypté en utilisant le chiffrement de César. Nous utilisons un script Python pour le décrypter :
 
