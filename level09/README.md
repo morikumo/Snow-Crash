@@ -82,15 +82,16 @@ Nous écrivons un script Python pour inverser cette transformation.
 **Script Python :**
 ```python
 import sys
+
 i = -1
 content = open("/home/user/level09/token").readlines()[0]
 for c in content:
-   i += 1
-     try:
+    i += 1
+    try:
         sys.stdout.write(chr(ord(c) - i))
-     except:
+    except:
         pass
-print "\n",
+print("\n")
 ```
 
 Nous mettons le script dans `/tmp` et l'exécutons.
